@@ -98,18 +98,18 @@ export const WatchAddress = () => {
               <CheckboxArrayControl name="alert_method" value="telegram">
                 Telegram
               </CheckboxArrayControl>
-              <CheckboxArrayControl name="alert_method" value="twitter">
+              {/* <CheckboxArrayControl name="alert_method" value="twitter">
                 Twitter
               </CheckboxArrayControl>
               <CheckboxArrayControl name="alert_method" value="email">
                 Email
-              </CheckboxArrayControl>
+              </CheckboxArrayControl> */}
             </HStack>
             <Error name="alert_method" />
           </Control>
 
           <Control mb={4} colorScheme="green" name="conditions" my={4}>
-            <FormLabel htmlFor="conditions">Conditions</FormLabel>
+            <FormLabel htmlFor="conditions">Condition</FormLabel>
 
             <Field
               placeholder="Select option"
@@ -118,15 +118,15 @@ export const WatchAddress = () => {
               name="conditions"
               component={ReactSelectAdapter}
             >
-              <option name="conditions" value="increase">
+              {/* <option name="conditions" value="increase">
                 ⬆ Increase
-              </option>
+              </option> */}
               <option name="conditions" value="decrease">
-                ⬇ Decrease
+                ⬇⬆ Swap out (buy)
               </option>
-              <option name="conditions" value="change">
+              {/* <option name="conditions" value="change">
                 𝚫 Change
-              </option>
+              </option> */}
             </Field>
             <Error name="conditions" />
           </Control>
