@@ -109,7 +109,7 @@ export const WatchAddress = () => {
           </Control>
 
           <Control mb={4} colorScheme="green" name="conditions" my={4}>
-            <FormLabel htmlFor="conditions">Condition</FormLabel>
+            <FormLabel htmlFor="conditions">Transaction Type</FormLabel>
 
             <Field
               placeholder="Select option"
@@ -118,9 +118,9 @@ export const WatchAddress = () => {
               name="conditions"
               component={ReactSelectAdapter}
             >
-              {/* <option name="conditions" value="increase">
-                ⬆ Increase
-              </option> */}
+              <option name="conditions" value="increase">
+                ⬆⬇ Swap in (sell)
+              </option>
               <option name="conditions" value="decrease">
                 ⬇⬆ Swap out (buy)
               </option>
