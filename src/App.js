@@ -18,9 +18,9 @@ function App() {
           <WatchAddress />
         </Box>
       </Stack>
-      <Box float="right" mt={4}>
+      {/* <Box float="right" mt={4}>
         <ByMoralis width={200} variant="dark"/>
-      </Box>
+      </Box> */}
     </Box>
     </Center>
   );
