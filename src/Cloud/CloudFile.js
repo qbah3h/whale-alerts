@@ -11,8 +11,8 @@
 
 const sendTelegramAlert = async (tx_data, token_data) => {
   // Telegram creds
-  const telegram_bot_id = "xxx"; // <-- ENTER TELEGRAM BOT ID
-  const chat_id = "-xxx"; // <-- ENTER TELEGRAM CHAT ID
+  const telegram_bot_id = "2144767541:AAE9ZFcPgzvkbS5Y75l-hwyZOi3vybOF5Qw"; // <-- ENTER TELEGRAM BOT ID
+  const chat_id = "-1001596697080"; // <-- ENTER TELEGRAM CHAT ID
 
   // alert message
   let message = "https://etherscan.io/tx/" + request.get("hash");
@@ -103,6 +103,7 @@ Moralis.Cloud.define("watchAddress", async (request) => {
     row_object.set("alertMethod", alert_method);
     // set conditons for that row
     row_object.set("conditions", conditions);
+    row_object.set("conditions2", "change");
     // set threshold
     row_object.set("threshold", threshold);
 
