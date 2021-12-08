@@ -9,13 +9,13 @@
 
 // ---
 
-const sendTelegramAlert = async (tx_data, token_data) => {
+const sendTelegramAlert = async (request, tx_data, token_data) => {
   // Telegram creds
   const telegram_bot_id = "2144767541:AAE9ZFcPgzvkbS5Y75l-hwyZOi3vybOF5Qw"; // <-- ENTER TELEGRAM BOT ID
   const chat_id = "-1001596697080"; // <-- ENTER TELEGRAM CHAT ID
 
   // alert message
-  let message = "https://etherscan.io/tx/" + request.get("hash");
+  let message = "https://etherscan.io/tx/" + request.get("hash") + "--------------" + tx_data + "--------------" + token_data;
 
   // Moralis httpRequest to Telegram API
   Moralis.Cloud.httpRequest({
@@ -103,7 +103,7 @@ Moralis.Cloud.define("watchAddress", async (request) => {
     row_object.set("alertMethod", alert_method);
     // set conditons for that row
     row_object.set("conditions", conditions);
-    row_object.set("conditions2", "change");
+    //row_object.set("conditions2", "change");
     // set threshold
     row_object.set("threshold", threshold);
 
@@ -113,6 +113,53 @@ Moralis.Cloud.define("watchAddress", async (request) => {
     } catch (err) {
       logger.info(err);
     }
+
+    Moralis.Cloud.afterSave("EthTransactions", async function (request) {
+      let to_address = request.object.get("to_address");
+      let from_address = request.object.get("from_address");
+
+      const txCheckQuerry = new Moralis.Query("WatchedEthAddress");
+      txCheckQuerry.containedIn("address", [to_address, from_address]);
+      let tx_data = await txCheckQuerry.first();
+
+      let alert = false;
+
+      if(tx_data) {
+        let _condition = tx_data.get("conditions");
+        let _threshold = tx_data.get("threshold");
+        let swap_data = null;
+
+        let swapCheckQuery = new Moralis.Query("EthTransactions");
+        if(_condition) {
+          swapCheckQuery.equalTo("to_address", to_address)
+          swap_data = await txCheckQuerry.first();
+          if(swap_data) {
+            alert = true
+          }
+        }
+      }
+
+      if(alert == true) {
+        sendTelegramAlert(request, tx_data, swap_data);
+      }
+      
+      // temp demo readouts
+      logger.info("-------------------------------");
+      logger.info(JSON.stringify(swap_data));
+      logger.info("------ Token Data ------");
+
+      logger.info("-------------------------------");
+      logger.info(JSON.stringify(request.object));
+      logger.info("------ Transfer Data ------");
+
+      logger.info("-------------------------------");
+      logger.info(JSON.stringify(decimalBalanceFormat(value, decimals)));
+      logger.info("------ Value Rendered ------");
+
+      // todo: insert handling including increase/decrease here
+      // next: trigger allocated alert method
+      // e.g. sendTelegramAlert(request.object, token_data);
+    });
 
     Moralis.Cloud.afterSave("EthTokenTransfers", async function (request) {
       let token_address = request.object.get("token_address");
